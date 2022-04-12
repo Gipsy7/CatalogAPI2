@@ -1,26 +1,27 @@
-using CatalogAPI2.Context;
+using CatalogAPI2.AppServicesExtensions;
 using CatalogAPI2.EndPoints;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+builder.AddApiSwagger();
+builder.AddPersistance();
+builder.Services.AddCors();
+builder.AddAuthenticationJwt();
 
 var app = builder.Build();
 
 app.MapCategoriesEndpoints();
 app.MapProductsEndpoints();
+app.MapAuthenticationEndpoints();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+var environment = app.Environment;
+
+app.UseExceptionHandling(environment)
+    .UseSwaggerMiddleware()
+    .UseAppCors();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
 

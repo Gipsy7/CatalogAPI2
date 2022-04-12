@@ -10,13 +10,13 @@ namespace CatalogAPI2.EndPoints
         {
             app.MapGet("/", () => "Product Catalog - 2022").ExcludeFromDescription();
 
-            app.MapGet("/categories", async (AppDbContext db) => await db.Categories.ToListAsync());
+            app.MapGet("/categories", async (AppDbContext db) => await db.Categories.ToListAsync()).WithTags("Categories").RequireAuthorization();
 
             app.MapGet("/categories/{id:int}", async (int id, AppDbContext db) =>
             {
                 return await db.Categories.FindAsync(id)
                     is Category category ? Results.Ok(category) : Results.NotFound();
-            });
+            }).WithTags("Categories");
 
             app.MapPost("/categories", async (Category category, AppDbContext db) =>
             {
@@ -24,7 +24,7 @@ namespace CatalogAPI2.EndPoints
                 await db.SaveChangesAsync();
 
                 return Results.Created($"/categories/{category.Id}", category);
-            });
+            }).WithTags("Categories");
 
             app.MapPut("/categories/{id:int}", async (int id, Category category, AppDbContext db) =>
             {
@@ -39,7 +39,7 @@ namespace CatalogAPI2.EndPoints
 
                 await db.SaveChangesAsync();
                 return Results.Ok(categoryDb);
-            });
+            }).WithTags("Categories");
 
             app.MapDelete("/categories/{id:int}", async (int id, AppDbContext db) =>
             {
@@ -51,7 +51,7 @@ namespace CatalogAPI2.EndPoints
                 await db.SaveChangesAsync();
 
                 return Results.NoContent();
-            });
+            }).WithTags("Categories");
         }
     }
 }

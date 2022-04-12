@@ -8,13 +8,13 @@ namespace CatalogAPI2.EndPoints
     {
         public static void MapProductsEndpoints(this WebApplication app)
         {
-            app.MapGet("/products", async (AppDbContext db) => await db.Products.ToListAsync());
+            app.MapGet("/products", async (AppDbContext db) => await db.Products.ToListAsync()).WithTags("Products").RequireAuthorization();
 
             app.MapGet("/products/{id:int}", async (int id, AppDbContext db) =>
             {
                 return await db.Products.FindAsync(id)
                     is Product product ? Results.Ok(product) : Results.NotFound();
-            });
+            }).WithTags("Products");
 
             app.MapPost("/products", async (Product product, AppDbContext db) =>
             {
@@ -22,7 +22,7 @@ namespace CatalogAPI2.EndPoints
                 await db.SaveChangesAsync();
 
                 return Results.Created($"/categories/{product.Id}", product);
-            });
+            }).WithTags("Products");
 
             app.MapPut("/products/{id:int}", async (int id, Product product, AppDbContext db) =>
             {
@@ -37,7 +37,7 @@ namespace CatalogAPI2.EndPoints
 
                 await db.SaveChangesAsync();
                 return Results.Ok(productDb);
-            });
+            }).WithTags("Products");
 
             app.MapDelete("/products/{id:int}", async (int id, AppDbContext db) =>
             {
@@ -49,7 +49,7 @@ namespace CatalogAPI2.EndPoints
                 await db.SaveChangesAsync();
 
                 return Results.NoContent();
-            });
+            }).WithTags("Products");
         }
     }
 }
