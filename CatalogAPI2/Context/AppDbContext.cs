@@ -26,7 +26,7 @@ namespace CatalogAPI2.Context
             mb.Entity<Product>().Property(c => c.Price).HasPrecision(14, 2);
 
             //Relationship
-            mb.Entity<Product>().HasOne<Category>(c => c.Category).WithMany(c => c.Products).HasForeignKey(c => c.Id);
+            mb.Entity<Product>().HasOne<Category>(c => c.Category).WithMany(c => c.Products).HasForeignKey(c => c.CategoryId);
         }
     }
 }

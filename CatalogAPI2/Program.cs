@@ -14,6 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connecti
 var app = builder.Build();
 
 app.MapCategoriesEndpoints();
+app.MapProductsEndpoints();
 
 if (app.Environment.IsDevelopment())
 {

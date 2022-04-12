@@ -1,4 +1,6 @@
-﻿namespace CatalogAPI2.Models
+﻿using System.Text.Json.Serialization;
+
+namespace CatalogAPI2.Models
 {
     public class Product
     {
@@ -10,6 +12,7 @@
         public DateTime BuyDate { get; set; }
         public int Stock { get; set; }
         public int CategoryId { get; set; }
+        [JsonIgnore]
         public Category? Category { get; set; }
     }
 }
