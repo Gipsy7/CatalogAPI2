@@ -1,4 +1,5 @@
 using CatalogAPI2.Context;
+using CatalogAPI2.EndPoints;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 var app = builder.Build();
+
+app.MapCategoriesEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
